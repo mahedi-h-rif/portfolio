@@ -30,11 +30,22 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
+      - name: Check for custom domain
+        id: check_cname
+        run: |
+          if [ -f "public/CNAME" ]; then
+            echo "custom_domain=true" >> $GITHUB_OUTPUT
+            echo "base_path=/" >> $GITHUB_OUTPUT
+          else
+            echo "custom_domain=false" >> $GITHUB_OUTPUT
+            echo "base_path=/${{ github.event.repository.name }}/" >> $GITHUB_OUTPUT
+          fi
+      
       - name: Build
         run: npm run build
         env:
           NODE_ENV: production
-          VITE_BASE_PATH: /${{ github.event.repository.name }}/
+          VITE_BASE_PATH: ${{ steps.check_cname.outputs.base_path }}
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
