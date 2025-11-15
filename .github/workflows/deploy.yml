@@ -30,13 +30,30 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
+      - name: Check for custom domain configuration
+        id: check_domain
+        run: |
+          # Check if CNAME file exists and if custom domain is configured
+          if [ -f "public/CNAME" ]; then
+            CNAME_DOMAIN=$(cat public/CNAME | tr -d '[:space:]')
+            echo "CNAME found: $CNAME_DOMAIN"
+            # For now, always use repo name path unless explicitly set
+            # When custom domain is fully configured in GitHub Pages settings,
+            # you can set this to use root path
+            echo "use_custom_domain=false" >> $GITHUB_OUTPUT
+            echo "base_path=/${{ github.event.repository.name }}/" >> $GITHUB_OUTPUT
+          else
+            echo "No CNAME file found"
+            echo "use_custom_domain=false" >> $GITHUB_OUTPUT
+            echo "base_path=/${{ github.event.repository.name }}/" >> $GITHUB_OUTPUT
+          fi
+          echo "Using base path: ${{ steps.check_domain.outputs.base_path }}"
+      
       - name: Build
         run: npm run build
         env:
           NODE_ENV: production
-          # Use repository name as base path for GitHub Pages
-          # When you configure a custom domain, update this to: VITE_BASE_PATH: /
-          VITE_BASE_PATH: /${{ github.event.repository.name }}/
+          VITE_BASE_PATH: ${{ steps.check_domain.outputs.base_path }}
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
