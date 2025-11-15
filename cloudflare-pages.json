@@ -1,0 +1,11 @@
+{
+  "build": {
+    "command": "npm run build",
+    "cwd": ".",
+    "watchPaths": ["src/**", "public/**", "index.html", "vite.config.js", "package.json"]
+  },
+  "deploy": {
+    "publish": "dist"
+  }
+}
+
