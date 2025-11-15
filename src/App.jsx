@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import ErrorBoundary from './components/ErrorBoundary'
 import Hero from './components/Hero'
 import Navigation from './components/Navigation'
 import About from './components/About'
@@ -35,16 +36,18 @@ function App() {
   }, [])
 
   return (
-    <div className="app">
-      <Navigation activeSection={activeSection} />
-      <Hero />
-      <About />
-      <Experience />
-      <Projects />
-      <Skills />
-      <Achievements />
-      <Contact />
-    </div>
+    <ErrorBoundary>
+      <div className="app">
+        <Navigation activeSection={activeSection} />
+        <Hero />
+        <About />
+        <Experience />
+        <Projects />
+        <Skills />
+        <Achievements />
+        <Contact />
+      </div>
+    </ErrorBoundary>
   )
 }
 

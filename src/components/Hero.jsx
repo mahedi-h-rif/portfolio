@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Sphere, MeshDistortMaterial, Float } from '@react-three/drei'
 import { motion } from 'framer-motion'
@@ -20,6 +21,12 @@ const AnimatedSphere = () => {
   )
 }
 
+const CanvasFallback = () => (
+  <div className="hero-background-fallback">
+    <div className="fallback-gradient"></div>
+  </div>
+)
+
 const Hero = () => {
   const scrollToContact = () => {
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
@@ -28,12 +35,18 @@ const Hero = () => {
   return (
     <section id="home" className="hero">
       <div className="hero-background">
-        <Canvas camera={{ position: [0, 0, 5] }}>
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[10, 10, 5]} intensity={1} />
-          <AnimatedSphere />
-          <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
-        </Canvas>
+        <Suspense fallback={<CanvasFallback />}>
+          <Canvas 
+            camera={{ position: [0, 0, 5] }}
+            gl={{ antialias: true, alpha: true }}
+            dpr={[1, 2]}
+          >
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[10, 10, 5]} intensity={1} />
+            <AnimatedSphere />
+            <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
+          </Canvas>
+        </Suspense>
       </div>
 
       <div className="hero-content">

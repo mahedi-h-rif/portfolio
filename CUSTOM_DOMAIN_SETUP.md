@@ -5,6 +5,7 @@ This guide will help you set up a custom domain for your GitHub Pages portfolio.
 ## Step 1: Choose and Register Your Domain
 
 Popular domain suggestions based on your name "Md Mahedi Hassan":
+
 - `mahedihassan.dev` (recommended - modern and professional)
 - `mahedihassan.com`
 - `mhmahedi.dev`
@@ -12,6 +13,7 @@ Popular domain suggestions based on your name "Md Mahedi Hassan":
 - `mahedihassan.me`
 
 You can register domains at:
+
 - [Namecheap](https://www.namecheap.com)
 - [Google Domains](https://domains.google)
 - [Cloudflare](https://www.cloudflare.com/products/registrar)
@@ -34,6 +36,7 @@ After registering your domain, configure DNS records with your domain provider:
 ### Option A: Apex Domain (e.g., mahedihassan.dev)
 
 Add these A records:
+
 ```
 Type: A
 Name: @
@@ -59,6 +62,7 @@ TTL: 3600
 ### Option B: www Subdomain (e.g., www.mahedihassan.dev)
 
 Add a CNAME record:
+
 ```
 Type: CNAME
 Name: www
@@ -90,6 +94,7 @@ https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pag
 ## Step 6: Verify SSL Certificate
 
 GitHub automatically provisions SSL certificates via Let's Encrypt:
+
 - This usually happens within 24 hours after DNS is configured
 - Make sure "Enforce HTTPS" is enabled in GitHub Pages settings
 - Your site will be accessible at `https://yourdomain.com`
@@ -101,23 +106,27 @@ If you're using a custom domain, the base path should be `/` (root). The workflo
 ## Troubleshooting
 
 ### Domain not working?
+
 1. Verify DNS records are correct (use `dig` or online DNS checker)
 2. Wait 24-48 hours for full propagation
 3. Check GitHub Pages settings show your custom domain
 4. Verify CNAME file is in the repository
 
 ### SSL Certificate issues?
+
 1. Make sure DNS is properly configured
 2. Wait up to 24 hours for certificate provisioning
 3. Check "Enforce HTTPS" is enabled
 
 ### Mixed content warnings?
+
 - Make sure all resources use HTTPS
 - Check browser console for specific errors
 
 ## Testing Your Setup
 
 After configuration, test with:
+
 ```bash
 # Check DNS records
 dig mahedihassan.dev
@@ -132,4 +141,3 @@ curl -I https://mahedihassan.dev
 Your CNAME file is set to: `mahedihassan.dev`
 
 To change it, edit `public/CNAME` and commit the change.
-
