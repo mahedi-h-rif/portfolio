@@ -30,24 +30,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
-      - name: Determine base path
-        id: base_path
-        run: |
-          # Check if custom domain is configured in GitHub Pages
-          # For now, always use repo name path unless explicitly set
-          if [ -n "${{ secrets.CUSTOM_DOMAIN_ENABLED }}" ] && [ "${{ secrets.CUSTOM_DOMAIN_ENABLED }}" = "true" ]; then
-            echo "base_path=/" >> $GITHUB_OUTPUT
-            echo "Using custom domain base path: /"
-          else
-            echo "base_path=/${{ github.event.repository.name }}/" >> $GITHUB_OUTPUT
-            echo "Using GitHub Pages base path: /${{ github.event.repository.name }}/"
-          fi
-      
       - name: Build
         run: npm run build
         env:
           NODE_ENV: production
-          VITE_BASE_PATH: ${{ steps.base_path.outputs.base_path }}
+          # Use repository name as base path for GitHub Pages
+          # When you configure a custom domain, update this to: VITE_BASE_PATH: /
+          VITE_BASE_PATH: /${{ github.event.repository.name }}/
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
